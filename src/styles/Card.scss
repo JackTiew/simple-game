@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.card-container {
+    @apply relative;
+    cursor: pointer;
+}
+
+.card-front, .card-back { 
+    @apply w-[150px];
+    @apply h-[150px];
+    @apply bg-[#FFFFFF];
+    @apply flex;
+    @apply justify-center;
+    @apply items-center;
+    @apply text-[black];
+    @apply absolute;
+    @apply text-[26px];
+    transition: 0.5s;
+    backface-visibility: hidden;
+}
+
+.card-front {
+    transform: rotateY(180deg);
+}
+
+.show-card .card-front {
+    transform: rotateY(0deg);
+}
+
+.show-card .card-back {
+    transform: rotateY(180deg);
+}
