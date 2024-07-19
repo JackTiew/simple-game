@@ -118,6 +118,9 @@ const App = () => {
 
 	return (
 		<div>
+			<div className='flex justify-center text-[30px] mt-[20px]'>
+				Please enter ` to show dictiornary or reset
+			</div>
 			<div className={`${showDict ? 'show-dict' : 'hide-dict' } flex justify-center w-screen h-[80dvh] pt-[10px] relative`}>
 				<textarea className='w-[80%] p-[20px] outline text-[#000000] text-[2rem] resize-none' value={dict} onChange={event => setDict(event.target.value)} />
 			</div>
