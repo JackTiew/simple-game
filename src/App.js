@@ -11,6 +11,7 @@ const App = () => {
 	const [ items, setItems ] = useState([]);
 	const [ openedItems, setOpenedItems ] = useState([]);
 	const [ cards, setCards ] = useState([]);
+	const [ isWinShow, setIsWinShow ] = useState(false);
 
 // Apple:苹果
 // Banana:香蕉
@@ -29,6 +30,7 @@ const App = () => {
 				event.preventDefault();
 				setShowDict(prev => {
 					if (prev === true) {
+						setIsWinShow(false);
 						resetItems();
 					}
 					return !prev;
@@ -44,12 +46,14 @@ const App = () => {
 	const resetItems = () => {
 		const item = dict.split('\n').map(item => item.split(':'));
 		const card = [];
+		let index = 1;
 
 		item.forEach(x => {
 			x.forEach(y => {
 				card.push({
 					label: y,
-					isOpen: false
+					isOpen: false,
+					id: index++
 				});
 			})
 		});
@@ -61,10 +65,25 @@ const App = () => {
 	useEffect(() => {
 		const doWork = async() => {
 			if (openedItems.length === 2) {
+				let card1 = document.getElementById(`card-${openedItems[0].id}`);
+				let card2 = document.getElementById(`card-${openedItems[1].id}`);
+
 				if (isCardMatch(openedItems)) { //match
+					card1.firstChild.classList.add('correct-card');
+					card2.firstChild.classList.add('correct-card');
 					setOpenedItems([]);
+
+					let openedCards = document.querySelectorAll(`.correct-card`);
+					if (openedCards.length === cards.length) {
+						await commonHelper.delay(1000);
+						setIsWinShow(true);
+					}
 				} else { //not match
-					await commonHelper.delay(2000);
+					card1.firstChild.classList.add('wrong-card');
+					card2.firstChild.classList.add('wrong-card');
+					await commonHelper.delay(1000);
+					card1.firstChild.classList.remove('wrong-card');
+					card2.firstChild.classList.remove('wrong-card');
 					setCards(cards.map(card => 
 						openedItems.some(item => item.label === card.label) ? {...card, isOpen: false} : card
 					));
@@ -77,18 +96,18 @@ const App = () => {
 	}, [ openedItems ]);
 
 	const handleCardClick = (selectedCard) => {
-		setCards(cards.map(card => 
-			card.label === selectedCard.label ? {...card, isOpen: true} : card
-		));
-		setOpenedItems([ ...openedItems, selectedCard]);
+		if (openedItems.length < 2 && !(openedItems.some(item => item.label === selectedCard.label))) {
+			setCards(cards.map(card => 
+				card.label === selectedCard.label ? {...card, isOpen: true} : card
+			));
+			setOpenedItems([ ...openedItems, selectedCard]);
+		}
 	};
 
 	const isCardMatch = (cards) => {
 		let isMatch = false;
 
 		items.forEach(item => {
-			console.log(item.includes(cards[0].label));
-			console.log(item.includes(cards[1].label));
 			if (item.includes(cards[0].label) && item.includes(cards[1].label)) {
 				isMatch = true;
 			}
@@ -102,11 +121,14 @@ const App = () => {
 			<div className={`${showDict ? 'show-dict' : 'hide-dict' } flex justify-center w-screen h-[80dvh] pt-[10px] relative`}>
 				<textarea className='w-[80%] p-[20px] outline text-[#000000] text-[2rem] resize-none' value={dict} onChange={event => setDict(event.target.value)} />
 			</div>
-			<div className='absolute top-0 left-[10%] w-[80%] h-[90%] flex justify-center items-center'>
-				<div className='grid grid-cols-5 gap-[200px] z-1'>
+			<div className='absolute h-dvh w-dvw top-0' style={{ zIndex: 2, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: isWinShow ? 'block' : 'none' }}>
+				<img className='absolute top-[50%] left-[50%]' style={{ transform: 'translate(-50%, -50%)'}} src='happy.gif' alt='' />
+			</div>
+			<div className='absolute top-[10%] left-[25%] w-[50%] h-[90%]'>
+				<div className='grid grid-cols-5 gap-x-[50px] gap-y-[200px] z-1' style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))'}}>
 					{
-						cards.map(card => (
-							<Card item={card} onCardClick={handleCardClick}/>
+						cards.map((card, index) => (
+							<Card key={index} index={index} item={card} onCardClick={handleCardClick}/>
 						))
 					}
 				</div>

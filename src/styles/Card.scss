@@ -19,6 +19,7 @@
     @apply text-[26px];
     transition: 0.5s;
     backface-visibility: hidden;
+    user-select: none;
 }
 
 .card-front {
@@ -31,4 +32,12 @@
 
 .show-card .card-back {
     transform: rotateY(180deg);
+}
+
+.correct-card {
+    box-shadow: -1px -1px 31px 9px rgba(39,222,79,0.6);
+}
+
+.wrong-card {
+    box-shadow: -1px -1px 31px 9px rgba(240,27,27,0.6);
 }
