@@ -7,22 +7,11 @@ const App = () => {
 
 	const commonHelper = CommonHelper();
 	const [ showDict, setShowDict ] = useState(false);
-	const [ dict, setDict ] = useState('');
+	const [ dict, setDict ] = useState('Apple:Epal\nBanana:Pisang\nWatermelon:Tembikai');
 	const [ items, setItems ] = useState([]);
 	const [ openedItems, setOpenedItems ] = useState([]);
 	const [ cards, setCards ] = useState([]);
 	const [ isWinShow, setIsWinShow ] = useState(false);
-
-// Apple:苹果
-// Banana:香蕉
-// Watermelon:西瓜
-// Pineapple:黄梨
-// Durian:榴莲
-// Kiwi:奇异果
-// Orange:橙
-// Dragonfruit:火龙果
-// Grape:葡萄
-// Blueberry:蓝莓
 
 	useEffect(() => {
 		const handleKeyPress = (event) => {
@@ -122,7 +111,7 @@ const App = () => {
 				Please enter ` to show dictiornary or reset
 			</div>
 			<div className={`${showDict ? 'show-dict' : 'hide-dict' } flex justify-center w-screen h-[80dvh] pt-[10px] relative`}>
-				<textarea className='w-[80%] p-[20px] outline text-[#000000] text-[2rem] resize-none' value={dict} onChange={event => setDict(event.target.value)} />
+				<textarea className='w-[80%] p-[20px] outline text-[#000000] text-[2rem] resize-none' value={dict} onChange={event => { console.log(event.target.value); setDict(event.target.value)}} />
 			</div>
 			<div className='absolute h-dvh w-dvw top-0' style={{ zIndex: 2, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: isWinShow ? 'block' : 'none' }}>
 				<img className='absolute top-[50%] left-[50%]' style={{ transform: 'translate(-50%, -50%)'}} src='happy.gif' alt='' />
