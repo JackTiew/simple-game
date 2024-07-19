@@ -7,7 +7,7 @@ const App = () => {
 
 	const commonHelper = CommonHelper();
 	const [ showDict, setShowDict ] = useState(false);
-	const [ dict, setDict ] = useState('Apple:Epal\nBanana:Pisang\nWatermelon:Tembikai');
+	const [ dict, setDict ] = useState('Apple:Epal\nBanana:Pisang\nWatermelon:Tembikai\nPineapple:Nanas\nPapaya:Betik\nStrawbeery:Strawberi\nOrange:Oren\nDragonfruit:Pitaya\nGrape:Anggur\nBlueberry:Beri Biru');
 	const [ items, setItems ] = useState([]);
 	const [ openedItems, setOpenedItems ] = useState([]);
 	const [ cards, setCards ] = useState([]);
